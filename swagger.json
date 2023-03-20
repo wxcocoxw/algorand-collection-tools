@@ -1,0 +1,195 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Algorand Collection Tools API",
+    "description": "An API to query Algorand Standard Assets in specific collections.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "paths": {
+    "/creator/{creatorAddress}/asa/holder/{walletAddress}": {
+      "get": {
+        "summary": "Get ASAs held by a specific wallet address that were created by a specific creator address.",
+        "parameters": [
+          {
+            "name": "creatorAddress",
+            "in": "path",
+            "description": "The wallet address of the asset creator.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "walletAddress",
+            "in": "path",
+            "description": "The wallet address of the holder.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of ASAs held by the wallet address.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "assetId": {
+                        "type": "integer"
+                      },
+                      "assetName": {
+                        "type": "string"
+                      },
+                      "amount": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred while fetching the ASAs."
+          }
+        }
+      }
+    },
+    "/{creatorAddress}/holders": {
+      "get": {
+        "summary": "Get holders of all assets created by a specific wallet address.",
+        "parameters": [
+          {
+            "name": "creatorAddress",
+            "in": "path",
+            "description": "The wallet address of the asset creator.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of holders and the respective ASAs they own.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "assetId": {
+                        "type": "integer"
+                      },
+                      "assetName": {
+                        "type": "string"
+                      },
+                      "holders": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "address": {
+                              "type": "string"
+                            },
+                            "amount": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred while fetching asset holders."
+          }
+        }
+      }
+    },
+    "/creator/{creatorAddress}/asas": {
+      "get": {
+        "summary": "Get all assets created by a specific wallet address.",
+        "parameters": [
+          {
+            "name": "creatorAddress",
+            "in": "path",
+            "description": "The wallet address of the asset creator.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of assets created by the wallet address.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "assets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "index": {
+                            "type": "integer"
+                          },
+                          "params": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "unit_name": {
+                                "type": "string"
+                              },
+                              "total": {
+                                "type": "integer"
+                              },
+                              "decimals": {
+                                "type": "integer"
+                              },
+                              "url": {
+                                "type": "string"
+                              },
+                              "metadata_hash": {
+                                "type": "string"
+                              },
+                              "creator": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred while fetching created assets."
+          }
+        }
+      }
+    }
+  }
+}
